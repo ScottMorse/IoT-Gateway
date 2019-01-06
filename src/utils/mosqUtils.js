@@ -1,4 +1,5 @@
 const mqtt = require('mqtt')
+const color = require('./colorWrap')
 
 const TOPICS = [
   'tg-temp-1',
@@ -6,23 +7,28 @@ const TOPICS = [
   'tg-temp-3'
 ]
 
-const RED = '\033[0;31m'
-const NC = '\033[0m'
-const CYAN = '\033[0;36m'
-const GREEN = '\033[1;32m'
-const PURPLE = '\033[1;35m'
+function successConn(client,clientName){
+  console.log(color(`[${clientName}] `,'cyan') + color('Connected!','green'))
+  for (topic of TOPICS){
+    client.subscribe(topic)
+  }
+}
+
+function failConn(err,clientName){
+  console.log(color(`[${clientName}] `,'cyan') + color('Connection error\n','red'),err)
+}
 
 const handleConn = (err,client,clientName) => {
   if(err) {
     if(err.returnCode !== 0){
-      console.log(`${CYAN}[${clientName}] ${RED}Connection error${NC}\n`,err)
+      failConn(err,clientName)
+    }
+    else{
+      successConn(client,clientName)
     }
   }
   else{
-    console.log(`${CYAN}[${clientName}] ${GREEN}Connected!${NC}`)
-    for (topic of TOPICS){
-      client.subscribe(topic)
-    }
+    successConn(client,clientName)
   }
 }
 
@@ -35,5 +41,5 @@ module.exports.createClient = (uri,clientName) => {
 }
 
 module.exports.handleMessage = (topic,message,clientName) => {
-  console.log(`\n${CYAN}[${clientName}] ${PURPLE}Message (Topic: ${topic}):${NC}\n`,String(message))
+  console.log(color(`\n[${clientName}] `,'cyan') + color(`Message (Topic: ${topic}):\n`,'purple'),String(message))
 }

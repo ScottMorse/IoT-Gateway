@@ -3,6 +3,7 @@ const should = chai.should()
 
 const mosquittos = require('../src/mosquittos/index')
 const mosqUtils = require('../src/utils/mosqUtils')
+const color = require('../src/utils/colorWrap')
 
 function testMessaging(client){
   return new Promise((resolve,reject)=>{
@@ -17,7 +18,7 @@ function testMessaging(client){
   })
 }
 
-describe('Local Mosquitto Connection',()=>{
+describe(color('Local Mosquitto Connection','yellow'),()=>{
   it('connects without error',()=>{
     const client = mosqUtils.createClient(mosquittos.LOCAL_URI,mosquittos.LOCAL_NAME)
     should.exist(client)
@@ -41,7 +42,7 @@ describe('Local Mosquitto Connection',()=>{
   })
 })
 
-describe('Remote Mosquitto Connection',()=>{
+describe(color('Remote Mosquitto Connection','yellow'),()=>{
   it('connects without error',()=>{
     const client = mosqUtils.createClient(mosquittos.REMOTE_URI,mosquittos.REMOTE_NAME)
     should.exist(client)

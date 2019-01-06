@@ -10,7 +10,9 @@ const flowFile = require('../src/red/flow.json')
 
 const server = http.createServer(expressApp)
 
-describe('Node-Red Initiliazation',()=>{
+const color = require('../src/utils/colorWrap')
+
+describe(color('Node-Red Initialization','yellow'),()=>{
   it('initializes without error',()=>{
     RED.init(server,redSettings)
   })

@@ -1,0 +1,25 @@
+{
+  "name": "mqtt-pract",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "mocha"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "4.16.4",
+    "http": "0.0.0",
+    "mqtt": "2.18.8",
+    "node-red": "0.19.5"
+  },
+  "devDependencies": {
+    "chai": "4.2.0",
+    "mocha": "5.2.0",
+    "nodemon": "1.18.9"
+  }
+}

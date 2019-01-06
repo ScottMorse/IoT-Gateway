@@ -1,0 +1,6 @@
+{
+  "httpAdminRoot": "/red",
+  "httpNodeRoot": "/api",
+  "useDir": "./",
+  "flowFile": "./src/red/flow.json"
+}

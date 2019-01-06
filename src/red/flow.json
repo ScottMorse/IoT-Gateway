@@ -1,0 +1,208 @@
+[
+  {
+      "id": "9a2110eb.26904",
+      "type": "tab",
+      "label": "Flow 1",
+      "disabled": false,
+      "info": ""
+  },
+  {
+      "id": "6a595a5c.2dad34",
+      "type": "inject",
+      "z": "9a2110eb.26904",
+      "name": "Temperature 1",
+      "topic": "",
+      "payload": "",
+      "payloadType": "num",
+      "repeat": "5",
+      "crontab": "",
+      "once": false,
+      "onceDelay": "",
+      "x": 220,
+      "y": 200,
+      "wires": [
+          [
+              "38e46d3d.5656d2"
+          ]
+      ]
+  },
+  {
+      "id": "392739a2.2b94c6",
+      "type": "mqtt out",
+      "z": "9a2110eb.26904",
+      "name": "Topic: tg-temp-1",
+      "topic": "tg-temp-1",
+      "qos": "0",
+      "retain": "true",
+      "broker": "67ca144a.4bd7cc",
+      "x": 710,
+      "y": 200,
+      "wires": []
+  },
+  {
+      "id": "9f849a4b.3fea68",
+      "type": "inject",
+      "z": "9a2110eb.26904",
+      "name": "Temperature 2",
+      "topic": "",
+      "payload": "",
+      "payloadType": "num",
+      "repeat": "5",
+      "crontab": "",
+      "once": false,
+      "onceDelay": "",
+      "x": 220,
+      "y": 240,
+      "wires": [
+          [
+              "ba42db2c.7b46f8"
+          ]
+      ]
+  },
+  {
+      "id": "38e46d3d.5656d2",
+      "type": "function",
+      "z": "9a2110eb.26904",
+      "name": "Generate Payload",
+      "func": "var lat = [ 29.42, 30.26, 32.77, 36.37, 38.62, 39.09, 41.87, 43.03, 44.97, 41.25];\nvar lon = [-98.49,-97.74,-96.79,-94.20,-90.19,-94.57,-87.62,-87.90,-93.26,-95.99];\nvar randomTemp = (Math.random() * (30 - (-30)) + (-30)).toFixed(1);  //random temp from -30.0 to 30.0 degrees\n\nvar timeIndex = Date.now();\n//This function below gets date and time and displays it via shortDate variable\nvar timeStamp = new Date().toLocaleTimeString();\nvar dateObj= new Date();\nvar newDate = dateObj.getFullYear() + '/' + ('0' + (dateObj.getMonth() + 1)).slice(-2) + '/' + ('0' + dateObj.getDate()).slice(-2) + ' <' + timeStamp + '>';\n\n// var month = ('0' + (dateObj.getMonth() + 1)).slice(-2);\n// var date = ('0' + dateObj.getDate()).slice(-2);\n// var year = dateObj.getFullYear();\n// var dateTime = year + '/' + month + '/' + date + ' <' + timeStamp + '>';\n\nvar idx = context.get('count') || 0;\n\nif( idx > 9 )\n{\n    idx = 0;  \n}\ncontext.set('count',idx+1); //store next idx for later\n\nmsg.payload = \n            {\n               \"uid\" : timeIndex,\n               \"timeStamp\" : newDate,\n                \"coord\" : \n                {\n                    \"lat\" : lat[idx],\n                    \"lon\" : lon[idx]\n                },\n                \"company\" : \"Acme Corp\",\n                \"avgTemp\" : randomTemp\n            };\n\nmsg.payload = JSON.stringify(msg.payload);\n\nreturn msg;",
+      "outputs": 1,
+      "noerr": 0,
+      "x": 450,
+      "y": 200,
+      "wires": [
+          [
+              "392739a2.2b94c6"
+          ]
+      ]
+  },
+  {
+      "id": "16d11053.72d6b",
+      "type": "inject",
+      "z": "9a2110eb.26904",
+      "name": "Temperature 3",
+      "topic": "",
+      "payload": "",
+      "payloadType": "num",
+      "repeat": "5",
+      "crontab": "",
+      "once": false,
+      "onceDelay": "",
+      "x": 220,
+      "y": 280,
+      "wires": [
+          [
+              "b6a8e921.6bc328"
+          ]
+      ]
+  },
+  {
+      "id": "86bc8c7c.b2e1b",
+      "type": "comment",
+      "z": "9a2110eb.26904",
+      "name": "Trigger Flow at Interval",
+      "info": "",
+      "x": 220,
+      "y": 160,
+      "wires": []
+  },
+  {
+      "id": "2241b06a.09665",
+      "type": "comment",
+      "z": "9a2110eb.26904",
+      "name": "Generate JSON Payload",
+      "info": "",
+      "x": 450,
+      "y": 160,
+      "wires": []
+  },
+  {
+      "id": "6776db87.aff4e4",
+      "type": "comment",
+      "z": "9a2110eb.26904",
+      "name": "Publish to Local Mosquitto at port 1883",
+      "info": "",
+      "x": 710,
+      "y": 160,
+      "wires": []
+  },
+  {
+      "id": "3483d334.526ccc",
+      "type": "mqtt out",
+      "z": "9a2110eb.26904",
+      "name": "Topic: tg-temp-2",
+      "topic": "tg-temp-2",
+      "qos": "0",
+      "retain": "true",
+      "broker": "67ca144a.4bd7cc",
+      "x": 710,
+      "y": 240,
+      "wires": []
+  },
+  {
+      "id": "3c13ed7f.6dcd42",
+      "type": "mqtt out",
+      "z": "9a2110eb.26904",
+      "name": "Topic: tg-temp-3",
+      "topic": "tg-temp-3",
+      "qos": "0",
+      "retain": "true",
+      "broker": "67ca144a.4bd7cc",
+      "x": 710,
+      "y": 280,
+      "wires": []
+  },
+  {
+      "id": "ba42db2c.7b46f8",
+      "type": "function",
+      "z": "9a2110eb.26904",
+      "name": "Generate Payload",
+      "func": "var lat = [ 29.42, 30.26, 32.77, 36.37, 38.62, 39.09, 41.87, 43.03, 44.97, 41.25];\nvar lon = [-98.49,-97.74,-96.79,-94.20,-90.19,-94.57,-87.62,-87.90,-93.26,-95.99];\nvar randomTemp = (Math.random() * (30 - (-30)) + (-30)).toFixed(1);  //random temp from -30.0 to 30.0 degrees\n\nvar timeIndex = Date.now();\n//This function below gets date and time and displays it via shortDate variable\nvar timeStamp = new Date().toLocaleTimeString();\nvar dateObj= new Date();\nvar newDate = dateObj.getFullYear() + '/' + ('0' + (dateObj.getMonth() + 1)).slice(-2) + '/' + ('0' + dateObj.getDate()).slice(-2) + ' <' + timeStamp + '>';\n\n// var month = ('0' + (dateObj.getMonth() + 1)).slice(-2);\n// var date = ('0' + dateObj.getDate()).slice(-2);\n// var year = dateObj.getFullYear();\n// var dateTime = year + '/' + month + '/' + date + ' <' + timeStamp + '>';\n\nvar idx = context.get('count') || 0;\n\nif( idx > 9 )\n{\n    idx = 0;  \n}\ncontext.set('count',idx+1); //store next idx for later\n\nmsg.payload = \n            {\n               \"uid\" : timeIndex,\n               \"timeStamp\" : newDate,\n                \"coord\" : \n                {\n                    \"lat\" : lat[idx],\n                    \"lon\" : lon[idx]\n                },\n                \"company\" : \"Acme Corp\",\n                \"avgTemp\" : randomTemp\n            };\n\nmsg.payload = JSON.stringify(msg.payload);\n\nreturn msg;",
+      "outputs": 1,
+      "noerr": 0,
+      "x": 450,
+      "y": 240,
+      "wires": [
+          [
+              "3483d334.526ccc"
+          ]
+      ]
+  },
+  {
+      "id": "b6a8e921.6bc328",
+      "type": "function",
+      "z": "9a2110eb.26904",
+      "name": "Generate Payload",
+      "func": "var lat = [ 29.42, 30.26, 32.77, 36.37, 38.62, 39.09, 41.87, 43.03, 44.97, 41.25];\nvar lon = [-98.49,-97.74,-96.79,-94.20,-90.19,-94.57,-87.62,-87.90,-93.26,-95.99];\nvar randomTemp = (Math.random() * (30 - (-30)) + (-30)).toFixed(1);  //random temp from -30.0 to 30.0 degrees\n\nvar timeIndex = Date.now();\n//This function below gets date and time and displays it via shortDate variable\nvar timeStamp = new Date().toLocaleTimeString();\nvar dateObj= new Date();\nvar newDate = dateObj.getFullYear() + '/' + ('0' + (dateObj.getMonth() + 1)).slice(-2) + '/' + ('0' + dateObj.getDate()).slice(-2) + ' <' + timeStamp + '>';\n\n// var month = ('0' + (dateObj.getMonth() + 1)).slice(-2);\n// var date = ('0' + dateObj.getDate()).slice(-2);\n// var year = dateObj.getFullYear();\n// var dateTime = year + '/' + month + '/' + date + ' <' + timeStamp + '>';\n\nvar idx = context.get('count') || 0;\n\nif( idx > 9 )\n{\n    idx = 0;  \n}\ncontext.set('count',idx+1); //store next idx for later\n\nmsg.payload = \n            {\n               \"uid\" : timeIndex,\n               \"timeStamp\" : newDate,\n                \"coord\" : \n                {\n                    \"lat\" : lat[idx],\n                    \"lon\" : lon[idx]\n                },\n                \"company\" : \"Acme Corp\",\n                \"avgTemp\" : randomTemp\n            };\n\nmsg.payload = JSON.stringify(msg.payload);\n\nreturn msg;",
+      "outputs": 1,
+      "noerr": 0,
+      "x": 450,
+      "y": 280,
+      "wires": [
+          [
+              "3c13ed7f.6dcd42"
+          ]
+      ]
+  },
+  {
+      "id": "67ca144a.4bd7cc",
+      "type": "mqtt-broker",
+      "z": "",
+      "name": "",
+      "broker": "mqtt://localhost:1883",
+      "port": "1883",
+      "clientid": "",
+      "usetls": false,
+      "compatmode": true,
+      "keepalive": "60",
+      "cleansession": true,
+      "birthTopic": "",
+      "birthQos": "0",
+      "birthPayload": "",
+      "closeTopic": "",
+      "closeQos": "0",
+      "closePayload": "",
+      "willTopic": "",
+      "willQos": "0",
+      "willPayload": ""
+  }
+]

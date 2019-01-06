@@ -1,11 +1,7 @@
 const mqtt = require('mqtt')
 const color = require('./colorWrap')
 
-const TOPICS = [
-  'tg-temp-1',
-  'tg-temp-2',
-  'tg-temp-3'
-]
+const TOPICS = require('./topics')
 
 function successConn(client,clientName){
   console.log(color(`[${clientName}] `,'cyan') + color('Connected!','green'))

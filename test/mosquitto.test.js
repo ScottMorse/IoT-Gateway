@@ -14,7 +14,10 @@ function testMessaging(client){
       resolve({topic,message})
     })
     client.publish('testTopic',JSON.stringify({test:'testMessage'}))
-    setTimeout(reject,1500)
+    setTimeout(()=>{
+      reject('Message reception timed out (1500ms).')
+      client.end()
+    },1500)
   })
 }
 

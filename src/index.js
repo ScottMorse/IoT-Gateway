@@ -17,7 +17,7 @@ const moscaSettings = {
 }
 
 const moscaServer = new mosca.Server(moscaSettings)
-moscaServer.on('ready', ()=>console.log(moscaServer));
+moscaServer.on('ready', ()=>console.log(color('[Mosca Server] Up','green')))
 
 //Node-Red
 const redSettings = require('./red/settings.json')

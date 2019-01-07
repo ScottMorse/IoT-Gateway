@@ -2,6 +2,6 @@
   "httpAdminRoot": "/red",
   "httpNodeRoot": "/api",
   "userDir": "./src/red/",
-  "nodesDir": "./src/red/node_modules",
+  "nodesDir": "./src/red/installed_nodes",
   "flowFile": "./src/red/lib/flow.json"
 }

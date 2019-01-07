@@ -369,6 +369,16 @@
      "local": false,
      "module": "node-red",
      "file": "/Users/scottm/Desktop/gateway/node_modules/node-red/nodes/core/storage/50-file.js"
+    },
+    "uuid": {
+     "name": "uuid",
+     "types": [
+      "uuid"
+     ],
+     "enabled": true,
+     "local": false,
+     "module": "node-red",
+     "file": "/Users/scottm/Desktop/gateway/src/red/node_modules/node-red-contrib-uuid/uuid/uuid.js"
     }
    }
   },

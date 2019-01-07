@@ -1,4 +1,5 @@
 const mosqUtils = require('../utils/mosqUtils')
+const db = ('../db/db')
 
 const LOCAL_NAME = 'Mosquitto Local Client'
 const REMOTE_NAME = 'Mosquitto Test Server'

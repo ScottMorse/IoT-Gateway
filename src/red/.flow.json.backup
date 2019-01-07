@@ -10,7 +10,7 @@
       "id": "6a595a5c.2dad34",
       "type": "inject",
       "z": "9a2110eb.26904",
-      "name": "Temperature 1",
+      "name": "Trigger",
       "topic": "",
       "payload": "",
       "payloadType": "num",
@@ -18,8 +18,8 @@
       "crontab": "",
       "once": false,
       "onceDelay": "",
-      "x": 220,
-      "y": 200,
+      "x": 140,
+      "y": 160,
       "wires": [
           [
               "38e46d3d.5656d2"
@@ -27,23 +27,10 @@
       ]
   },
   {
-      "id": "392739a2.2b94c6",
-      "type": "mqtt out",
-      "z": "9a2110eb.26904",
-      "name": "Topic: tg-dummy-temp-1",
-      "topic": "tg-dummy-temp-1",
-      "qos": "0",
-      "retain": "true",
-      "broker": "67ca144a.4bd7cc",
-      "x": 710,
-      "y": 200,
-      "wires": []
-  },
-  {
       "id": "9f849a4b.3fea68",
       "type": "inject",
       "z": "9a2110eb.26904",
-      "name": "Temperature 2",
+      "name": "Trigger",
       "topic": "",
       "payload": "",
       "payloadType": "num",
@@ -51,8 +38,8 @@
       "crontab": "",
       "once": false,
       "onceDelay": "",
-      "x": 220,
-      "y": 240,
+      "x": 140,
+      "y": 200,
       "wires": [
           [
               "ba42db2c.7b46f8"
@@ -63,15 +50,15 @@
       "id": "38e46d3d.5656d2",
       "type": "function",
       "z": "9a2110eb.26904",
-      "name": "Generate Payload",
-      "func": "var lat = [ 29.42, 30.26, 32.77, 36.37, 38.62, 39.09, 41.87, 43.03, 44.97, 41.25];\nvar lon = [-98.49,-97.74,-96.79,-94.20,-90.19,-94.57,-87.62,-87.90,-93.26,-95.99];\nvar randomTemp = (Math.random() * (30 - (-30)) + (-30)).toFixed(1);  //random temp from -30.0 to 30.0 degrees\n\nvar timeIndex = Date.now();\n//This function below gets date and time and displays it via shortDate variable\nvar timeStamp = new Date().toLocaleTimeString();\nvar dateObj= new Date();\nvar newDate = dateObj.getFullYear() + '/' + ('0' + (dateObj.getMonth() + 1)).slice(-2) + '/' + ('0' + dateObj.getDate()).slice(-2) + ' <' + timeStamp + '>';\n\n// var month = ('0' + (dateObj.getMonth() + 1)).slice(-2);\n// var date = ('0' + dateObj.getDate()).slice(-2);\n// var year = dateObj.getFullYear();\n// var dateTime = year + '/' + month + '/' + date + ' <' + timeStamp + '>';\n\nvar idx = context.get('count') || 0;\n\nif( idx > 9 )\n{\n    idx = 0;  \n}\ncontext.set('count',idx+1); //store next idx for later\n\nmsg.payload = \n            {\n               \"uid\" : timeIndex,\n               \"timeStamp\" : newDate,\n                \"coord\" : \n                {\n                    \"lat\" : lat[idx],\n                    \"lon\" : lon[idx]\n                },\n                \"company\" : \"Acme Corp\",\n                \"avgTemp\" : randomTemp\n            };\n\nmsg.payload = JSON.stringify(msg.payload);\n\nreturn msg;",
+      "name": "dummy-temp-1",
+      "func": "var lat = [ 29.42, 30.26, 32.77, 36.37, 38.62, 39.09, 41.87, 43.03, 44.97, 41.25];\nvar lon = [-98.49,-97.74,-96.79,-94.20,-90.19,-94.57,-87.62,-87.90,-93.26,-95.99];\nvar randomTemp = (Math.random() * (30 - (-30)) + (-30)).toFixed(1);  //random temp from -30.0 to 30.0 degrees\n\nvar timeIndex = Date.now();\n//This function below gets date and time and displays it via shortDate variable\nvar timeStamp = new Date().toLocaleTimeString();\nvar dateObj= new Date();\nvar newDate = dateObj.getFullYear() + '/' + ('0' + (dateObj.getMonth() + 1)).slice(-2) + '/' + ('0' + dateObj.getDate()).slice(-2) + ' <' + timeStamp + '>';\n\n// var month = ('0' + (dateObj.getMonth() + 1)).slice(-2);\n// var date = ('0' + dateObj.getDate()).slice(-2);\n// var year = dateObj.getFullYear();\n// var dateTime = year + '/' + month + '/' + date + ' <' + timeStamp + '>';\n\nvar idx = context.get('count') || 0;\n\nif( idx > 9 )\n{\n    idx = 0;  \n}\ncontext.set('count',idx+1); //store next idx for later\n\nmsg.payload = \n            {\n               \"uid\" : timeIndex,\n               \"timeStamp\" : newDate,\n                \"coord\" : \n                {\n                    \"lat\" : lat[idx],\n                    \"lon\" : lon[idx]\n                },\n                \"company\" : \"Acme Corp\",\n                \"avgTemp\" : randomTemp\n            };\n\nmsg.payload = JSON.stringify(msg.payload);\nmsg.topic = node.name;\n\nreturn msg;",
       "outputs": 1,
       "noerr": 0,
-      "x": 450,
-      "y": 200,
+      "x": 340,
+      "y": 160,
       "wires": [
           [
-              "392739a2.2b94c6"
+              "be04db7e.e82c88"
           ]
       ]
   },
@@ -79,7 +66,7 @@
       "id": "16d11053.72d6b",
       "type": "inject",
       "z": "9a2110eb.26904",
-      "name": "Temperature 3",
+      "name": "Trigger",
       "topic": "",
       "payload": "",
       "payloadType": "num",
@@ -87,8 +74,8 @@
       "crontab": "",
       "once": false,
       "onceDelay": "",
-      "x": 220,
-      "y": 280,
+      "x": 140,
+      "y": 240,
       "wires": [
           [
               "b6a8e921.6bc328"
@@ -101,8 +88,8 @@
       "z": "9a2110eb.26904",
       "name": "Trigger Flow at Interval",
       "info": "",
-      "x": 220,
-      "y": 160,
+      "x": 120,
+      "y": 120,
       "wires": []
   },
   {
@@ -111,8 +98,8 @@
       "z": "9a2110eb.26904",
       "name": "Generate JSON Payload",
       "info": "",
-      "x": 450,
-      "y": 160,
+      "x": 350,
+      "y": 120,
       "wires": []
   },
   {
@@ -121,49 +108,23 @@
       "z": "9a2110eb.26904",
       "name": "Publish to Local Mosquitto at port 1883",
       "info": "",
-      "x": 710,
+      "x": 630,
       "y": 160,
-      "wires": []
-  },
-  {
-      "id": "3483d334.526ccc",
-      "type": "mqtt out",
-      "z": "9a2110eb.26904",
-      "name": "Topic: tg-dummy-temp-2",
-      "topic": "tg-dummy-temp-2",
-      "qos": "0",
-      "retain": "true",
-      "broker": "67ca144a.4bd7cc",
-      "x": 710,
-      "y": 240,
-      "wires": []
-  },
-  {
-      "id": "3c13ed7f.6dcd42",
-      "type": "mqtt out",
-      "z": "9a2110eb.26904",
-      "name": "Topic: tg-dummy-temp-3",
-      "topic": "tg-dummy-temp-3",
-      "qos": "0",
-      "retain": "true",
-      "broker": "67ca144a.4bd7cc",
-      "x": 710,
-      "y": 280,
       "wires": []
   },
   {
       "id": "ba42db2c.7b46f8",
       "type": "function",
       "z": "9a2110eb.26904",
-      "name": "Generate Payload",
-      "func": "var lat = [ 29.42, 30.26, 32.77, 36.37, 38.62, 39.09, 41.87, 43.03, 44.97, 41.25];\nvar lon = [-98.49,-97.74,-96.79,-94.20,-90.19,-94.57,-87.62,-87.90,-93.26,-95.99];\nvar randomTemp = (Math.random() * (30 - (-30)) + (-30)).toFixed(1);  //random temp from -30.0 to 30.0 degrees\n\nvar timeIndex = Date.now();\n//This function below gets date and time and displays it via shortDate variable\nvar timeStamp = new Date().toLocaleTimeString();\nvar dateObj= new Date();\nvar newDate = dateObj.getFullYear() + '/' + ('0' + (dateObj.getMonth() + 1)).slice(-2) + '/' + ('0' + dateObj.getDate()).slice(-2) + ' <' + timeStamp + '>';\n\n// var month = ('0' + (dateObj.getMonth() + 1)).slice(-2);\n// var date = ('0' + dateObj.getDate()).slice(-2);\n// var year = dateObj.getFullYear();\n// var dateTime = year + '/' + month + '/' + date + ' <' + timeStamp + '>';\n\nvar idx = context.get('count') || 0;\n\nif( idx > 9 )\n{\n    idx = 0;  \n}\ncontext.set('count',idx+1); //store next idx for later\n\nmsg.payload = \n            {\n               \"uid\" : timeIndex,\n               \"timeStamp\" : newDate,\n                \"coord\" : \n                {\n                    \"lat\" : lat[idx],\n                    \"lon\" : lon[idx]\n                },\n                \"company\" : \"Acme Corp\",\n                \"avgTemp\" : randomTemp\n            };\n\nmsg.payload = JSON.stringify(msg.payload);\n\nreturn msg;",
+      "name": "dummy-temp-2",
+      "func": "var lat = [ 29.42, 30.26, 32.77, 36.37, 38.62, 39.09, 41.87, 43.03, 44.97, 41.25];\nvar lon = [-98.49,-97.74,-96.79,-94.20,-90.19,-94.57,-87.62,-87.90,-93.26,-95.99];\nvar randomTemp = (Math.random() * (30 - (-30)) + (-30)).toFixed(1);  //random temp from -30.0 to 30.0 degrees\n\nvar timeIndex = Date.now();\n//This function below gets date and time and displays it via shortDate variable\nvar timeStamp = new Date().toLocaleTimeString();\nvar dateObj= new Date();\nvar newDate = dateObj.getFullYear() + '/' + ('0' + (dateObj.getMonth() + 1)).slice(-2) + '/' + ('0' + dateObj.getDate()).slice(-2) + ' <' + timeStamp + '>';\n\n// var month = ('0' + (dateObj.getMonth() + 1)).slice(-2);\n// var date = ('0' + dateObj.getDate()).slice(-2);\n// var year = dateObj.getFullYear();\n// var dateTime = year + '/' + month + '/' + date + ' <' + timeStamp + '>';\n\nvar idx = context.get('count') || 0;\n\nif( idx > 9 )\n{\n    idx = 0;  \n}\ncontext.set('count',idx+1); //store next idx for later\n\nmsg.payload = \n            {\n               \"uid\" : timeIndex,\n               \"timeStamp\" : newDate,\n                \"coord\" : \n                {\n                    \"lat\" : lat[idx],\n                    \"lon\" : lon[idx]\n                },\n                \"company\" : \"Acme Corp\",\n                \"avgTemp\" : randomTemp\n            };\n\nmsg.payload = JSON.stringify(msg.payload);\nmsg.topic = node.name;\n\nreturn msg;",
       "outputs": 1,
       "noerr": 0,
-      "x": 450,
-      "y": 240,
+      "x": 340,
+      "y": 200,
       "wires": [
           [
-              "3483d334.526ccc"
+              "be04db7e.e82c88"
           ]
       ]
   },
@@ -171,17 +132,68 @@
       "id": "b6a8e921.6bc328",
       "type": "function",
       "z": "9a2110eb.26904",
-      "name": "Generate Payload",
-      "func": "var lat = [ 29.42, 30.26, 32.77, 36.37, 38.62, 39.09, 41.87, 43.03, 44.97, 41.25];\nvar lon = [-98.49,-97.74,-96.79,-94.20,-90.19,-94.57,-87.62,-87.90,-93.26,-95.99];\nvar randomTemp = (Math.random() * (30 - (-30)) + (-30)).toFixed(1);  //random temp from -30.0 to 30.0 degrees\n\nvar timeIndex = Date.now();\n//This function below gets date and time and displays it via shortDate variable\nvar timeStamp = new Date().toLocaleTimeString();\nvar dateObj= new Date();\nvar newDate = dateObj.getFullYear() + '/' + ('0' + (dateObj.getMonth() + 1)).slice(-2) + '/' + ('0' + dateObj.getDate()).slice(-2) + ' <' + timeStamp + '>';\n\n// var month = ('0' + (dateObj.getMonth() + 1)).slice(-2);\n// var date = ('0' + dateObj.getDate()).slice(-2);\n// var year = dateObj.getFullYear();\n// var dateTime = year + '/' + month + '/' + date + ' <' + timeStamp + '>';\n\nvar idx = context.get('count') || 0;\n\nif( idx > 9 )\n{\n    idx = 0;  \n}\ncontext.set('count',idx+1); //store next idx for later\n\nmsg.payload = \n            {\n               \"uid\" : timeIndex,\n               \"timeStamp\" : newDate,\n                \"coord\" : \n                {\n                    \"lat\" : lat[idx],\n                    \"lon\" : lon[idx]\n                },\n                \"company\" : \"Acme Corp\",\n                \"avgTemp\" : randomTemp\n            };\n\nmsg.payload = JSON.stringify(msg.payload);\n\nreturn msg;",
+      "name": "dummy-temp-3",
+      "func": "var lat = [ 29.42, 30.26, 32.77, 36.37, 38.62, 39.09, 41.87, 43.03, 44.97, 41.25];\nvar lon = [-98.49,-97.74,-96.79,-94.20,-90.19,-94.57,-87.62,-87.90,-93.26,-95.99];\nvar randomTemp = (Math.random() * (30 - (-30)) + (-30)).toFixed(1);  //random temp from -30.0 to 30.0 degrees\n\nvar timeIndex = Date.now();\n//This function below gets date and time and displays it via shortDate variable\nvar timeStamp = new Date().toLocaleTimeString();\nvar dateObj= new Date();\nvar newDate = dateObj.getFullYear() + '/' + ('0' + (dateObj.getMonth() + 1)).slice(-2) + '/' + ('0' + dateObj.getDate()).slice(-2) + ' <' + timeStamp + '>';\n\n// var month = ('0' + (dateObj.getMonth() + 1)).slice(-2);\n// var date = ('0' + dateObj.getDate()).slice(-2);\n// var year = dateObj.getFullYear();\n// var dateTime = year + '/' + month + '/' + date + ' <' + timeStamp + '>';\n\nvar idx = context.get('count') || 0;\n\nif( idx > 9 )\n{\n    idx = 0;  \n}\ncontext.set('count',idx+1); //store next idx for later\n\nmsg.payload = \n            {\n               \"uid\" : timeIndex,\n               \"timeStamp\" : newDate,\n                \"coord\" : \n                {\n                    \"lat\" : lat[idx],\n                    \"lon\" : lon[idx]\n                },\n                \"company\" : \"Acme Corp\",\n                \"avgTemp\" : randomTemp\n            };\n\nmsg.payload = JSON.stringify(msg.payload);\nmsg.topic = node.name;\nmsg.complete = true;\n\nreturn msg;",
       "outputs": 1,
       "noerr": 0,
-      "x": 450,
-      "y": 280,
+      "x": 340,
+      "y": 240,
       "wires": [
           [
-              "3c13ed7f.6dcd42"
+              "be04db7e.e82c88"
           ]
       ]
+  },
+  {
+      "id": "be04db7e.e82c88",
+      "type": "join",
+      "z": "9a2110eb.26904",
+      "name": "",
+      "mode": "custom",
+      "build": "object",
+      "property": "payload",
+      "propertyType": "msg",
+      "key": "topic",
+      "joiner": "\\n",
+      "joinerType": "str",
+      "accumulate": false,
+      "timeout": "",
+      "count": "",
+      "reduceRight": false,
+      "reduceExp": "",
+      "reduceInit": "",
+      "reduceInitType": "",
+      "reduceFixup": "",
+      "x": 530,
+      "y": 200,
+      "wires": [
+          [
+              "714b645.f69a69c"
+          ]
+      ]
+  },
+  {
+      "id": "714b645.f69a69c",
+      "type": "mqtt out",
+      "z": "9a2110eb.26904",
+      "name": "Topic: tgDeviceData",
+      "topic": "tgDeviceData",
+      "qos": "0",
+      "retain": "true",
+      "broker": "67ca144a.4bd7cc",
+      "x": 700,
+      "y": 200,
+      "wires": []
+  },
+  {
+      "id": "5e445cce.36a6a4",
+      "type": "comment",
+      "z": "9a2110eb.26904",
+      "name": "Follow the name format (affects data payload)",
+      "info": "",
+      "x": 350,
+      "y": 80,
+      "wires": []
   },
   {
       "id": "67ca144a.4bd7cc",

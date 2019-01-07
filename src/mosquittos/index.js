@@ -12,6 +12,7 @@ const remoteClient = mosqUtils.createClient(REMOTE_URI,REMOTE_NAME)
 
 localClient.on('message',(topic,message) => {
   mosqUtils.handleMessage(topic,message,LOCAL_NAME)
+  db.insert(message)
   remoteClient.publish(topic,message)
 })
 

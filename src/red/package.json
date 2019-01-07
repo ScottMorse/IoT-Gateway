@@ -1,0 +1,9 @@
+{
+  "name": "iot-gateway",
+  "description": "Data generator for Timbergrove",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+      "node-red-contrib-uuid": "0.0.4"
+  }
+}

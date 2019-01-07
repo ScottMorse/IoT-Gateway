@@ -7,26 +7,6 @@
       "info": ""
   },
   {
-      "id": "6a595a5c.2dad34",
-      "type": "inject",
-      "z": "9a2110eb.26904",
-      "name": "Trigger",
-      "topic": "",
-      "payload": "",
-      "payloadType": "num",
-      "repeat": "5",
-      "crontab": "",
-      "once": false,
-      "onceDelay": "",
-      "x": 140,
-      "y": 160,
-      "wires": [
-          [
-              "38e46d3d.5656d2"
-          ]
-      ]
-  },
-  {
       "id": "9f849a4b.3fea68",
       "type": "inject",
       "z": "9a2110eb.26904",
@@ -42,7 +22,9 @@
       "y": 200,
       "wires": [
           [
-              "ba42db2c.7b46f8"
+              "b7458af9.8ef988",
+              "e1bb2840.b9bd28",
+              "638b2524.a75b2c"
           ]
       ]
   },
@@ -51,34 +33,14 @@
       "type": "function",
       "z": "9a2110eb.26904",
       "name": "dummy-temp-1",
-      "func": "var lat = [ 29.42, 30.26, 32.77, 36.37, 38.62, 39.09, 41.87, 43.03, 44.97, 41.25];\nvar lon = [-98.49,-97.74,-96.79,-94.20,-90.19,-94.57,-87.62,-87.90,-93.26,-95.99];\nvar randomTemp = (Math.random() * (30 - (-30)) + (-30)).toFixed(1);  //random temp from -30.0 to 30.0 degrees\n\nvar timeIndex = Date.now();\n//This function below gets date and time and displays it via shortDate variable\nvar timeStamp = new Date().toLocaleTimeString();\nvar dateObj= new Date();\nvar newDate = dateObj.getFullYear() + '/' + ('0' + (dateObj.getMonth() + 1)).slice(-2) + '/' + ('0' + dateObj.getDate()).slice(-2) + ' <' + timeStamp + '>';\n\n// var month = ('0' + (dateObj.getMonth() + 1)).slice(-2);\n// var date = ('0' + dateObj.getDate()).slice(-2);\n// var year = dateObj.getFullYear();\n// var dateTime = year + '/' + month + '/' + date + ' <' + timeStamp + '>';\n\nvar idx = context.get('count') || 0;\n\nif( idx > 9 )\n{\n    idx = 0;  \n}\ncontext.set('count',idx+1); //store next idx for later\n\nmsg.payload = \n            {\n               \"uid\" : timeIndex,\n               \"timeStamp\" : newDate,\n                \"coord\" : \n                {\n                    \"lat\" : lat[idx],\n                    \"lon\" : lon[idx]\n                },\n                \"company\" : \"Acme Corp\",\n                \"avgTemp\" : randomTemp\n            };\n\nmsg.payload = JSON.stringify(msg.payload);\nmsg.topic = node.name;\n\nreturn msg;",
+      "func": "const lat = [ 29.42, 30.26, 32.77, 36.37, 38.62, 39.09, 41.87, 43.03, 44.97, 41.25];\nconst lon = [-98.49,-97.74,-96.79,-94.20,-90.19,-94.57,-87.62,-87.90,-93.26,-95.99];\nconst randomTemp = parseFloat((Math.random() * (30 - (-30)) + (-30)).toFixed(1));  //random temp from -30.0 to 30.0 degrees\n\nconst timeStamp = Date.now();\nconst dateObj= new Date();\nconst timeString = dateObj.toLocaleString();\n\nconst uuid = msg.payload\n\nlet idx = context.get('count') || 0;\n\nif( idx > 9 )\n{\n    idx = 0;  \n}\ncontext.set('count',idx+1); //store next idx for later\n\nmsg.payload = \n            {\n               \"id\" : uuid,\n               \"timeStamp\" : timeStamp,\n               \"timeString\": timeString,\n                \"coord\" : \n                {\n                    \"lat\" : lat[idx],\n                    \"lon\" : lon[idx]\n                },\n                \"company\" : \"Acme Corp\",\n                \"avgTemp\" : randomTemp\n            };\n\nmsg.topic = node.name;\n\nreturn msg;",
       "outputs": 1,
       "noerr": 0,
-      "x": 340,
+      "x": 620,
       "y": 160,
       "wires": [
           [
               "be04db7e.e82c88"
-          ]
-      ]
-  },
-  {
-      "id": "16d11053.72d6b",
-      "type": "inject",
-      "z": "9a2110eb.26904",
-      "name": "Trigger",
-      "topic": "",
-      "payload": "",
-      "payloadType": "num",
-      "repeat": "5",
-      "crontab": "",
-      "once": false,
-      "onceDelay": "",
-      "x": 140,
-      "y": 240,
-      "wires": [
-          [
-              "b6a8e921.6bc328"
           ]
       ]
   },
@@ -98,7 +60,7 @@
       "z": "9a2110eb.26904",
       "name": "Generate JSON Payload",
       "info": "",
-      "x": 350,
+      "x": 610,
       "y": 120,
       "wires": []
   },
@@ -108,7 +70,7 @@
       "z": "9a2110eb.26904",
       "name": "Publish to Local Mosquitto at port 1883",
       "info": "",
-      "x": 630,
+      "x": 970,
       "y": 160,
       "wires": []
   },
@@ -117,10 +79,10 @@
       "type": "function",
       "z": "9a2110eb.26904",
       "name": "dummy-temp-2",
-      "func": "var lat = [ 29.42, 30.26, 32.77, 36.37, 38.62, 39.09, 41.87, 43.03, 44.97, 41.25];\nvar lon = [-98.49,-97.74,-96.79,-94.20,-90.19,-94.57,-87.62,-87.90,-93.26,-95.99];\nvar randomTemp = (Math.random() * (30 - (-30)) + (-30)).toFixed(1);  //random temp from -30.0 to 30.0 degrees\n\nvar timeIndex = Date.now();\n//This function below gets date and time and displays it via shortDate variable\nvar timeStamp = new Date().toLocaleTimeString();\nvar dateObj= new Date();\nvar newDate = dateObj.getFullYear() + '/' + ('0' + (dateObj.getMonth() + 1)).slice(-2) + '/' + ('0' + dateObj.getDate()).slice(-2) + ' <' + timeStamp + '>';\n\n// var month = ('0' + (dateObj.getMonth() + 1)).slice(-2);\n// var date = ('0' + dateObj.getDate()).slice(-2);\n// var year = dateObj.getFullYear();\n// var dateTime = year + '/' + month + '/' + date + ' <' + timeStamp + '>';\n\nvar idx = context.get('count') || 0;\n\nif( idx > 9 )\n{\n    idx = 0;  \n}\ncontext.set('count',idx+1); //store next idx for later\n\nmsg.payload = \n            {\n               \"uid\" : timeIndex,\n               \"timeStamp\" : newDate,\n                \"coord\" : \n                {\n                    \"lat\" : lat[idx],\n                    \"lon\" : lon[idx]\n                },\n                \"company\" : \"Acme Corp\",\n                \"avgTemp\" : randomTemp\n            };\n\nmsg.payload = JSON.stringify(msg.payload);\nmsg.topic = node.name;\n\nreturn msg;",
+      "func": "const lat = [ 29.42, 30.26, 32.77, 36.37, 38.62, 39.09, 41.87, 43.03, 44.97, 41.25];\nconst lon = [-98.49,-97.74,-96.79,-94.20,-90.19,-94.57,-87.62,-87.90,-93.26,-95.99];\nconst randomTemp = parseFloat((Math.random() * (30 - (-30)) + (-30)).toFixed(1));  //random temp from -30.0 to 30.0 degrees\n\nconst timeStamp = Date.now();\nconst dateObj= new Date();\nconst timeString = dateObj.toLocaleString();\n\nconst uuid = msg.payload\n\nlet idx = context.get('count') || 0;\n\nif( idx > 9 )\n{\n    idx = 0;  \n}\ncontext.set('count',idx+1); //store next idx for later\n\nmsg.payload = \n            {\n               \"id\" : uuid,\n               \"timeStamp\" : timeStamp,\n               \"timeString\": timeString,\n                \"coord\" : \n                {\n                    \"lat\" : lat[idx],\n                    \"lon\" : lon[idx]\n                },\n                \"company\" : \"Acme Corp\",\n                \"avgTemp\" : randomTemp\n            };\n\nmsg.topic = node.name;\n\nreturn msg;",
       "outputs": 1,
       "noerr": 0,
-      "x": 340,
+      "x": 620,
       "y": 200,
       "wires": [
           [
@@ -133,14 +95,14 @@
       "type": "function",
       "z": "9a2110eb.26904",
       "name": "dummy-temp-3",
-      "func": "var lat = [ 29.42, 30.26, 32.77, 36.37, 38.62, 39.09, 41.87, 43.03, 44.97, 41.25];\nvar lon = [-98.49,-97.74,-96.79,-94.20,-90.19,-94.57,-87.62,-87.90,-93.26,-95.99];\nvar randomTemp = (Math.random() * (30 - (-30)) + (-30)).toFixed(1);  //random temp from -30.0 to 30.0 degrees\n\nvar timeIndex = Date.now();\n//This function below gets date and time and displays it via shortDate variable\nvar timeStamp = new Date().toLocaleTimeString();\nvar dateObj= new Date();\nvar newDate = dateObj.getFullYear() + '/' + ('0' + (dateObj.getMonth() + 1)).slice(-2) + '/' + ('0' + dateObj.getDate()).slice(-2) + ' <' + timeStamp + '>';\n\n// var month = ('0' + (dateObj.getMonth() + 1)).slice(-2);\n// var date = ('0' + dateObj.getDate()).slice(-2);\n// var year = dateObj.getFullYear();\n// var dateTime = year + '/' + month + '/' + date + ' <' + timeStamp + '>';\n\nvar idx = context.get('count') || 0;\n\nif( idx > 9 )\n{\n    idx = 0;  \n}\ncontext.set('count',idx+1); //store next idx for later\n\nmsg.payload = \n            {\n               \"uid\" : timeIndex,\n               \"timeStamp\" : newDate,\n                \"coord\" : \n                {\n                    \"lat\" : lat[idx],\n                    \"lon\" : lon[idx]\n                },\n                \"company\" : \"Acme Corp\",\n                \"avgTemp\" : randomTemp\n            };\n\nmsg.payload = JSON.stringify(msg.payload);\nmsg.topic = node.name;\nmsg.complete = true;\n\nreturn msg;",
+      "func": "const lat = [ 29.42, 30.26, 32.77, 36.37, 38.62, 39.09, 41.87, 43.03, 44.97, 41.25];\nconst lon = [-98.49,-97.74,-96.79,-94.20,-90.19,-94.57,-87.62,-87.90,-93.26,-95.99];\nconst randomTemp = parseFloat((Math.random() * (30 - (-30)) + (-30)).toFixed(1));  //random temp from -30.0 to 30.0 degrees\n\nconst timeStamp = Date.now();\nconst dateObj= new Date();\nconst timeString = dateObj.toLocaleString();\n\nconst uuid = msg.payload\n\nlet idx = context.get('count') || 0;\n\nif( idx > 9 )\n{\n    idx = 0;  \n}\ncontext.set('count',idx+1); //store next idx for later\n\nmsg.payload = \n            {\n               \"id\" : uuid,\n               \"timeStamp\" : timeStamp,\n               \"timeString\": timeString,\n                \"coord\" : \n                {\n                    \"lat\" : lat[idx],\n                    \"lon\" : lon[idx]\n                },\n                \"company\" : \"Acme Corp\",\n                \"avgTemp\" : randomTemp\n            };\n\nmsg.topic = node.name;\n\nreturn msg;",
       "outputs": 1,
       "noerr": 0,
-      "x": 340,
+      "x": 620,
       "y": 240,
       "wires": [
           [
-              "be04db7e.e82c88"
+              "ee70dabb.95c738"
           ]
       ]
   },
@@ -164,7 +126,7 @@
       "reduceInit": "",
       "reduceInitType": "",
       "reduceFixup": "",
-      "x": 530,
+      "x": 850,
       "y": 200,
       "wires": [
           [
@@ -181,7 +143,7 @@
       "qos": "0",
       "retain": "true",
       "broker": "67ca144a.4bd7cc",
-      "x": 700,
+      "x": 1040,
       "y": 200,
       "wires": []
   },
@@ -191,9 +153,82 @@
       "z": "9a2110eb.26904",
       "name": "Follow the name format (affects data payload)",
       "info": "",
-      "x": 350,
+      "x": 610,
       "y": 80,
       "wires": []
+  },
+  {
+      "id": "b7458af9.8ef988",
+      "type": "uuid",
+      "z": "9a2110eb.26904",
+      "uuidVersion": "v4",
+      "namespaceType": "",
+      "namespace": "",
+      "namespaceCustom": "",
+      "name": "",
+      "field": "payload",
+      "fieldType": "msg",
+      "x": 450,
+      "y": 160,
+      "wires": [
+          [
+              "38e46d3d.5656d2"
+          ]
+      ]
+  },
+  {
+      "id": "ee70dabb.95c738",
+      "type": "function",
+      "z": "9a2110eb.26904",
+      "name": "Payload Complete",
+      "func": "msg.complete = true\nreturn msg;",
+      "outputs": 1,
+      "noerr": 0,
+      "x": 830,
+      "y": 300,
+      "wires": [
+          [
+              "be04db7e.e82c88"
+          ]
+      ]
+  },
+  {
+      "id": "e1bb2840.b9bd28",
+      "type": "uuid",
+      "z": "9a2110eb.26904",
+      "uuidVersion": "v4",
+      "namespaceType": "",
+      "namespace": "",
+      "namespaceCustom": "",
+      "name": "",
+      "field": "payload",
+      "fieldType": "msg",
+      "x": 450,
+      "y": 200,
+      "wires": [
+          [
+              "ba42db2c.7b46f8"
+          ]
+      ]
+  },
+  {
+      "id": "638b2524.a75b2c",
+      "type": "uuid",
+      "z": "9a2110eb.26904",
+      "uuidVersion": "v4",
+      "namespaceType": "",
+      "namespace": "",
+      "namespaceCustom": "",
+      "name": "",
+      "field": "payload",
+      "fieldType": "msg",
+      "x": 450,
+      "y": 240,
+      "wires": [
+          [
+              "b6a8e921.6bc328"
+          ]
+      ]
   },
   {
       "id": "67ca144a.4bd7cc",

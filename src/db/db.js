@@ -2,14 +2,16 @@ const sqlite3 = require('sqlite3').verbose()
 var db = new sqlite3.Database('database')
 
 db.run(`CREATE TABLE IF NOT EXISTS data(
-    uid INTEGER NOT NULL,
+    id INTEGER NOT NULL,
     timeStamp TEXT NOT NULL,
+    timeString TEXT NOT NULL,
     coord TEXT NOT NULL,
     company TEXT NOT NULL,
     avgTemp REAL)`)
 
 getData = (message) => {
-    let messagesArray = Object.values(message).map((message) => {
+    let messagesObject = JSON.parse(message.toString())
+    let messagesArray = Object.values(messagesObject).map((message) => {
         return  Object.values(message).map((data) => {
                     if(typeof data === 'object') {
                         return JSON.stringify(data)
@@ -19,17 +21,16 @@ getData = (message) => {
                     }
                 })
     })
+    return messagesArray
 }
 
 module.exports.insert = (message) => {
-    let valArray = getData(message)
-    console.log("hi")
-    console.log(valArray)
-    // for(let i = 0; i < valArray.length; i++){
-    //     db.run(`INSERT INTO data(uid, timeStamp, coord, company, avgTemp) VALUES(?, ?, ?, ?, ?)`, valArray[i],(err) => {
-    //         if(err){
-    //             console.log(err)
-    //         }
-    //     })
-    // }
+    let valArrays = getData(message)
+    for(let i = 0; i < valArrays.length; i++){
+        db.run(`INSERT INTO data(id, timeStamp, timeString, coord, company, avgTemp) VALUES(?, ?, ?, ?, ?, ?)`, valArrays[i],(err) => {
+            if(err){
+                console.log(err)
+            }
+        })
+    }
 }

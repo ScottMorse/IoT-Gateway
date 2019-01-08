@@ -11,14 +11,14 @@ const localClient = mosqUtils.createClient(LOCAL_URI,LOCAL_NAME)
 const remoteClient = mosqUtils.createClient(REMOTE_URI,REMOTE_NAME)
 
 localClient.on('message',(topic,message) => {
-  mosqUtils.handleMessage(topic,message,LOCAL_NAME)
+  // mosqUtils.handleMessage(topic,message,LOCAL_NAME)
   db.insert(message)
-  remoteClient.publish(topic,message)
+  // remoteClient.publish(topic,message)
 })
 
-remoteClient.on('message',(topic,message) => {
-  mosqUtils.handleMessage(topic,message,REMOTE_NAME)
-})
+// remoteClient.on('message',(topic,message) => {
+//   mosqUtils.handleMessage(topic,message,REMOTE_NAME)
+// })
 
 module.exports = {
   LOCAL_NAME,

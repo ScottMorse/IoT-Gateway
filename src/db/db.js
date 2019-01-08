@@ -1,6 +1,8 @@
 const sqlite3 = require('sqlite3').verbose()
 var db = new sqlite3.Database('database')
 
+const color = require('../utils/colorWrap')
+
 db.run(`CREATE TABLE IF NOT EXISTS data(
     id INTEGER NOT NULL,
     timeStamp INTEGER NOT NULL,
@@ -24,12 +26,15 @@ getData = (message) => {
 
 module.exports.insert = (message) => {
     let valArrays = getData(message)
-    console.log(valArrays)
-    for(let i = 0; i < valArrays.length; i++){
+    for(i in valArrays){
         db.run(`INSERT INTO data(id, timeStamp, company, value, units, deviceType, deviceName, lat, lng) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)`, valArrays[i],(err) => {
             if(err){
                 console.log(err)
             }
+            else{
+              
+            }
         })
     }
+    console.log(color('[DB SQLite]: ','cyan') + color('Inserts made','yellow'))
 }

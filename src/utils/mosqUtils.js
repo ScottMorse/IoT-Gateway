@@ -36,6 +36,10 @@ module.exports.createClient = (uri,clientName) => {
   return client
 }
 
-module.exports.handleMessage = (topic,message,clientName) => {
-  console.log(color(`\n[${clientName}] `,'cyan') + color(`Message (Topic: ${topic}):\n`,'purple'),String(message))
+module.exports.handleLocalMessage = (topic,message,clientName) => {
+  console.log(color(`[${clientName}] `,'cyan') + color(`Message Received`,'yellow'))
+}
+
+module.exports.handleRemoteMessage = (topic,message,clientName) => {
+  console.log(color(`[${clientName}] `,'cyan') + color(`Message Published`,'yellow'))
 }
